@@ -32,6 +32,16 @@ class Recovery(Base):
     snapshot: Mapped[dict]=mapped_column(JSON)
     result: Mapped[dict | None]=mapped_column(JSON,nullable=True)
     created_at: Mapped[datetime]=mapped_column(DateTime,default=now)
+class MergeJob(Base):
+    __tablename__='merge_jobs'
+    id: Mapped[int]=mapped_column(primary_key=True)
+    label: Mapped[str]=mapped_column(String(120))
+    status: Mapped[str]=mapped_column(String(20),default='completed')
+    verdict_key: Mapped[str]=mapped_column(String(64),unique=True)
+    snapshot: Mapped[dict]=mapped_column(JSON)
+    verdict: Mapped[dict]=mapped_column(JSON)
+    new_log_set_id: Mapped[int]=mapped_column(ForeignKey('log_sets.id'))
+    created_at: Mapped[datetime]=mapped_column(DateTime,default=now)
 class Audit(Base):
     __tablename__='audits'
     id: Mapped[int]=mapped_column(primary_key=True)
